@@ -16,26 +16,40 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDragging = false;
     let startX;
     let startWidth;
+    let isProgressBarVisible = true;
+    let hoveredArtist = null;
+    let activeArtist = null;
 
     // Function to update artist showcase
-    function updateArtistShowcase(index) {
-        const artist = artists[index];
-        
+    function updateArtistShowcase(artist) {
+        const artistImage = document.querySelector('.artist-image');
+        const artistName = document.querySelector('.artist-name');
+        const artistOrigin = document.querySelector('.artist-origin');
+        const progressFill = document.querySelector('.progress-fill');
+
+        if (!artistImage || !artistName || !artistOrigin || !progressFill) return;
+
         // Fade out current content
         artistImage.style.opacity = '0';
         artistName.style.opacity = '0';
         artistOrigin.style.opacity = '0';
 
-        // Update content after fade out
         setTimeout(() => {
-            artistImage.src = artist.image;
-            artistImage.alt = artist.name;
+            artistImage.src = `Images/Artist_Headshots/${artist.image}`;
             artistName.textContent = artist.name;
             artistOrigin.textContent = artist.origin;
-            // Fade in new content
-            artistImage.style.opacity = '1';
-            artistName.style.opacity = '1';
-            artistOrigin.style.opacity = '1';
+            // Reset and animate progress bar
+            progressFill.style.transition = 'none';
+            progressFill.style.width = '0%';
+            setTimeout(() => {
+                artistImage.style.opacity = '1';
+                artistName.style.opacity = '1';
+                artistOrigin.style.opacity = '1';
+                if (isProgressBarVisible) {
+                    progressFill.style.transition = `width ${progressDuration / 1000}s linear`;
+                    progressFill.style.width = '100%';
+                }
+            }, 50);
         }, 500);
     }
 
@@ -47,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressFill.style.width = `${progress * 100}%`;
         if (progress >= 1) {
             currentArtistIndex = (currentArtistIndex + 1) % artists.length;
-            updateArtistShowcase(currentArtistIndex);
+            updateArtistShowcase(artists[currentArtistIndex]);
             startProgress();
         } else {
             requestAnimationFrame(updateProgressBar);
@@ -87,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(updateProgressBar);
             if (progress >= 1) {
                 currentArtistIndex = (currentArtistIndex + 1) % artists.length;
-                updateArtistShowcase(currentArtistIndex);
+                updateArtistShowcase(artists[currentArtistIndex]);
                 startProgress();
             }
         }
@@ -103,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(updateProgressBar);
         if (progress >= 1) {
             currentArtistIndex = (currentArtistIndex + 1) % artists.length;
-            updateArtistShowcase(currentArtistIndex);
+            updateArtistShowcase(artists[currentArtistIndex]);
             startProgress();
         }
     });
@@ -117,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Show first artist
-        updateArtistShowcase(currentArtistIndex);
+        updateArtistShowcase(artists[currentArtistIndex]);
         startProgress();
     }
 
@@ -279,24 +293,94 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render artist grid buttons
     const artistGrid = document.getElementById('artist-grid');
-    if (artistGrid && typeof artists !== 'undefined') {
-        artists.forEach(artist => {
-            const btn = document.createElement('button');
-            btn.className = 'artist-grid-btn';
-            btn.textContent = artist.name;
-            btn.onclick = () => {
-                window.location.href = `artist.html?id=${artist.id}`;
-            };
-            artistGrid.appendChild(btn);
+    const activeArtistImageContainer = document.getElementById('active-artist-image');
+    const activeArtistImg = document.getElementById('active-artist-img');
+    const activeArtistName = document.getElementById('active-artist-name');
+
+    if (artistGrid) {
+        artists.forEach((artist, index) => {
+            const button = document.createElement('button');
+            button.className = 'artist-button';
+            button.textContent = artist.name;
+
+            button.addEventListener('mouseenter', () => {
+                hoveredArtist = artist;
+                updateActiveArtist(artist);
+            });
+            button.addEventListener('mouseleave', () => {
+                hoveredArtist = null;
+                updateActiveArtist(artists[currentArtistIndex]);
+            });
+            button.addEventListener('click', () => {
+                currentArtistIndex = index;
+                updateArtistShowcase(artist);
+                updateActiveArtist(artist);
+            });
+            artistGrid.appendChild(button);
         });
     }
 
-    // Make artist portrait clickable
-    const artistImageContainer = document.querySelector('.artist-image-container');
-    if (artistImageContainer && typeof artists !== 'undefined') {
-        artistImageContainer.onclick = () => {
-            const artist = artists[currentArtistIndex];
-            window.location.href = `artist.html?id=${artist.id}`;
-        };
+    function updateActiveArtist(artist, forceImmediate) {
+        if (!artist) {
+            console.warn('No artist provided to updateActiveArtist');
+            return;
+        }
+        // Set the full-page nature scene background
+        const backgroundImage = document.querySelector('.background-image');
+        let bgFile = artist.background;
+        if (!bgFile) {
+            console.warn('Artist has no background property:', artist);
+            bgFile = 'Nunavut.png'; // fallback
+        }
+        const bgPath = `Images/Artist_Backgrounds/${bgFile}`;
+        console.log('Setting background image to:', bgPath);
+        if (backgroundImage) {
+            if (forceImmediate) {
+                backgroundImage.src = bgPath;
+                backgroundImage.style.opacity = '1';
+            } else {
+                backgroundImage.style.opacity = '0';
+                setTimeout(() => {
+                    backgroundImage.src = bgPath;
+                    backgroundImage.style.opacity = '1';
+                }, 200);
+            }
+        }
+        // Use tight headshot for the image next to the buttons
+        if (activeArtistImageContainer && activeArtistImg && activeArtistName) {
+            activeArtistImg.src = `Images/Artist_Hedshots_Tight/${artist.image}`;
+            activeArtistName.textContent = artist.name;
+            activeArtistImageContainer.style.display = 'block';
+        }
     }
+
+    // Set initial artist and background image
+    if (artists.length > 0) {
+        updateArtistShowcase(artists[0]);
+        updateActiveArtist(artists[0], true);
+    } else {
+        // Set a default background image if no artists
+        const backgroundImage = document.querySelector('.background-image');
+        if (backgroundImage) {
+            backgroundImage.src = 'Images/Artist_Backgrounds/Nunavut.png';
+            backgroundImage.style.opacity = '1';
+        }
+    }
+
+    // Intersection Observer for progress bar visibility
+    const progressObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            isProgressBarVisible = entry.isIntersecting;
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                if (isProgressBarVisible) {
+                    progressFill.style.transition = 'width 5s linear';
+                    progressFill.style.width = '100%';
+                } else {
+                    progressFill.style.transition = 'none';
+                    progressFill.style.width = '0%';
+                }
+            }
+        });
+    }, { threshold: 0.5 });
 }); 

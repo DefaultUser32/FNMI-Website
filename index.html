@@ -8,7 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div class="background-overlay"></div>
     <div class="main-container">
+        <!-- Background Image -->
+        <div class="background-container">
+            <img class="background-image" src="Images/Artist_Backgrounds/Alberta.png" alt="Background">
+        </div>
+
         <!-- Welcome Section -->
         <section id="welcome" class="section active">
             <div class="content">
@@ -72,6 +78,10 @@
                 <!-- Artist Grid Buttons -->
                 <div class="artist-grid-container">
                     <div class="artist-grid" id="artist-grid"></div>
+                    <div class="active-artist-image" id="active-artist-image" style="display:none;">
+                        <img src="" alt="Active Artist" id="active-artist-img">
+                        <div class="active-artist-name" id="active-artist-name"></div>
+                    </div>
                 </div>
             </div>
         </section>
