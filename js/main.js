@@ -2,85 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize GSAP
     gsap.registerPlugin(ScrollTrigger);
 
-    // Artist showcase data
-    const artists = [
-        {
-            name: "Kent Monkman",
-            origin: "Cree, Fisher River Cree Nation",
-            image: "Images/Artist_Headshots/Kent_Monkman.png"
-        },
-        {
-            name: "Nyle Johnston",
-            origin: "Anishinaabe, Chippewas of Nawash Unceded First Nation",
-            image: "Images/Artist_Headshots/Nyle_Johnston.png"
-        },
-        {
-            name: "Amy Malbeuf",
-            origin: "Métis, Rich Lake, Alberta",
-            image: "Images/Artist_Headshots/Amy_Malbeuf.png"
-        },
-        {
-            name: "Jay Soule (Chippewar)",
-            origin: "Anishinaabe, Chippewas of the Thames First Nation",
-            image: "Images/Artist_Headshots/Jay_Soule.png"
-        },
-        {
-            name: "Lance Cardinal",
-            origin: "Cree, Bigstone Cree Nation",
-            image: "Images/Artist_Headshots/Lance_Cardinal.png"
-        },
-        {
-            name: "Shelly Niro",
-            origin: "Mohawk, Six Nations of the Grand River",
-            image: "Images/Artist_Headshots/Shelly_Niro.png"
-        },
-        {
-            name: "Dana Claxton",
-            origin: "Lakota Sioux, Wood Mountain Lakota First Nation",
-            image: "Images/Artist_Headshots/Dana_Claxton.png"
-        },
-        {
-            name: "Kablusiak",
-            origin: "Inuvialuk, Tuktoyaktuk/NWT",
-            image: "Images/Artist_Headshots/Kablusiak.png"
-        },
-        {
-            name: "Aylan Couchie",
-            origin: "Nipissing First Nation",
-            image: "Images/Artist_Headshots/Aylan_Couchie.png"
-        },
-        {
-            name: "Caroline Monnet",
-            origin: "Anishinaabe/French, Outaouais region",
-            image: "Images/Artist_Headshots/Caroline_Monnet.png"
-        },
-        {
-            name: "Skawennati",
-            origin: "Mohawk, Kahnawà:ke",
-            image: "Images/Artist_Headshots/Skawennati.png"
-        },
-        {
-            name: "Tanya Tagaq",
-            origin: "Inuk, Nunavut",
-            image: "Images/Artist_Headshots/Tanya_Tagaq.png"
-        },
-        {
-            name: "Rande Cook",
-            origin: "Kwakwaka'wakw, 'Namgis First Nation",
-            image: "Images/Artist_Headshots/Rande_Cook.png"
-        },
-        {
-            name: "Jordan Bennett",
-            origin: "Mi'kmaq, Qalipu First Nation, Newfoundland",
-            image: "Images/Artist_Headshots/Jordan_Bennett.png"
-        },
-        {
-            name: "Tara Williamson",
-            origin: "Anishinaabe, Manitoba",
-            image: "Images/Artist_Headshots/Tara_Williamson.png"
-        }
-    ];
-
     // Artist showcase elements
     const artistImage = document.querySelector('.artist-image');
     const artistName = document.querySelector('.artist-name');
@@ -352,4 +273,30 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    // Load artists array from artists.js
+    // (assume artists.js is loaded before this script)
+
+    // Render artist grid buttons
+    const artistGrid = document.getElementById('artist-grid');
+    if (artistGrid && typeof artists !== 'undefined') {
+        artists.forEach(artist => {
+            const btn = document.createElement('button');
+            btn.className = 'artist-grid-btn';
+            btn.textContent = artist.name;
+            btn.onclick = () => {
+                window.location.href = `artist.html?id=${artist.id}`;
+            };
+            artistGrid.appendChild(btn);
+        });
+    }
+
+    // Make artist portrait clickable
+    const artistImageContainer = document.querySelector('.artist-image-container');
+    if (artistImageContainer && typeof artists !== 'undefined') {
+        artistImageContainer.onclick = () => {
+            const artist = artists[currentArtistIndex];
+            window.location.href = `artist.html?id=${artist.id}`;
+        };
+    }
 }); 
