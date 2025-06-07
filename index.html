@@ -86,11 +86,6 @@
             </div>
         </section>
 
-        <!-- Feed Button -->
-        <button id="feed-toggle" class="feed-button">
-            <i class="fas fa-arrow-right"></i>
-        </button>
-
         <!-- Feed View -->
         <div id="feed-view" class="feed-container hidden">
             <div class="feed-content">
@@ -100,15 +95,26 @@
 
         <!-- Artist Detail Section (hidden by default) -->
         <section id="artist-detail-section" class="section" style="display:none;">
-            <div class="artist-detail-content">
-                <select id="artist-select"></select>
+            <div class="artist-detail-grid">
                 <div class="artist-detail-image-container">
                     <img class="artist-detail-image" src="" alt="Artist Image">
                 </div>
-                <h2 class="artist-detail-name"></h2>
-                <p class="artist-detail-origin"></p>
-                <button id="back-to-main">&larr; Back to Showcase</button>
+                <div class="artist-detail-main">
+                    <h2 class="artist-detail-name"></h2>
+                </div>
+                <div class="artist-detail-bio-meta-wrap">
+                    <div class="artist-detail-meta">
+                        <div class="artist-detail-location"></div>
+                        <div class="artist-detail-pronouns">Pronouns: <span>they/them</span></div>
+                        <div class="artist-detail-age">Age: <span>32</span></div>
+                    </div>
+                    <div class="artist-detail-bio">
+                        <h3>Biography</h3>
+                        <p class="artist-detail-bio-text">This is an example biography for the artist. It will be replaced with the real biography text soon. The artist's story, achievements, and background will be shown here.</p>
+                    </div>
+                </div>
             </div>
+            <button id="back-to-main">&larr; Back to Showcase</button>
         </section>
     </div>
 

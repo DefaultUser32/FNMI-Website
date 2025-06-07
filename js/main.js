@@ -220,11 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentSections = document.querySelectorAll('.content-section');
     let currentSection = 'power-of-art';
 
-    // Feed toggle
-    const feedToggle = document.getElementById('feed-toggle');
-    const feedView = document.getElementById('feed-view');
-    let isFeedOpen = false;
-
     // Initialize sections
     contentSections.forEach(section => {
         if (section.id === 'welcome') {
@@ -238,15 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetSection = item.dataset.section;
             navigateToSection(targetSection);
         });
-    });
-
-    // Feed toggle handler (arrow button)
-    feedToggle.addEventListener('click', () => {
-        isFeedOpen = !isFeedOpen;
-        showSection(isFeedOpen ? 'feed' : 'welcome');
-        feedView.classList.toggle('active');
-        feedToggle.querySelector('i').classList.toggle('fa-arrow-right');
-        feedToggle.querySelector('i').classList.toggle('fa-arrow-left');
     });
 
     // Navigation function
@@ -463,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.artist-detail-image').src = `Images/Artist_Headshots/${artist.image}`;
         document.querySelector('.artist-detail-image').alt = artist.name;
         document.querySelector('.artist-detail-name').textContent = artist.name;
-        document.querySelector('.artist-detail-origin').textContent = artist.origin;
+        document.querySelector('.artist-detail-location').textContent = artist.origin;
         if (artistSelect) artistSelect.value = artist.id;
         showSection('artist');
     }
