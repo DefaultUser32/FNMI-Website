@@ -57,24 +57,10 @@ const artists = [
         background: "Northwest_Territories.png"
     },
     {
-        id: "aylan_couchie",
-        name: "Aylan Couchie",
-        origin: "Nipissing First Nation",
-        image: "Aylan_Couchie.png",
-        background: "Ontario.png"
-    },
-    {
         id: "caroline_monnet",
         name: "Caroline Monnet",
         origin: "Anishinaabe/French, Outaouais region",
         image: "Caroline_Monnet.png",
-        background: "Quebec.png"
-    },
-    {
-        id: "skawennati",
-        name: "Skawennati",
-        origin: "Mohawk, Kahnawà:ke",
-        image: "Skawennati.png",
         background: "Quebec.png"
     },
     {
@@ -97,12 +83,5 @@ const artists = [
         origin: "Mi'kmaq, Qalipu First Nation, Newfoundland",
         image: "Jordan_Bennett.png",
         background: "Newfoundland.png"
-    },
-    {
-        id: "tara_williamson",
-        name: "Tara Williamson",
-        origin: "Anishinaabe, Manitoba",
-        image: "Tara_Williamson.png",
-        background: "Manitoba.png"
     }
 ]; 

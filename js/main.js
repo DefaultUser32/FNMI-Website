@@ -50,9 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 startProgress(); // Restart the progress
             });
             button.addEventListener('click', () => {
-                currentArtistIndex = index;
-                updateArtistShowcase(artist);
-                updateActiveArtist(artist);
+                // Go to artist detail page
+                window.location.href = `artist-detail.html?id=${artist.id}`;
             });
             artistGrid.appendChild(button);
         });
@@ -211,10 +210,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Feed toggle handler
+    // Feed toggle handler (arrow button)
     feedToggle.addEventListener('click', () => {
         isFeedOpen = !isFeedOpen;
         feedView.classList.toggle('active');
+        // Do NOT toggle .hidden anymore
         feedToggle.querySelector('i').classList.toggle('fa-arrow-right');
         feedToggle.querySelector('i').classList.toggle('fa-arrow-left');
     });
@@ -405,5 +405,25 @@ document.addEventListener('DOMContentLoaded', () => {
             activeArtistName.textContent = artist.name;
             activeArtistImageContainer.style.display = 'block';
         }
+    }
+
+    // Make main artist image clickable
+    artistImage.style.cursor = 'pointer';
+    artistImage.addEventListener('click', () => {
+        const artist = artists[currentArtistIndex];
+        window.location.href = `artist-detail.html?id=${artist.id}`;
+    });
+
+    // Make preview image (bottom) clickable
+    if (activeArtistImg) {
+        activeArtistImg.style.cursor = 'pointer';
+        activeArtistImg.addEventListener('click', () => {
+            // Extract filename from src
+            const imgFilename = activeArtistImg.src.split('/').pop();
+            const artist = artists.find(a => a.image === imgFilename);
+            if (artist) {
+                window.location.href = `artist-detail.html?id=${artist.id}`;
+            }
+        });
     }
 }); 

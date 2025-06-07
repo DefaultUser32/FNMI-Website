@@ -37,7 +37,7 @@ body {
 .content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem 1.2rem;
 }
 
 .welcome-title {
@@ -125,13 +125,13 @@ body {
 /* Progress Bar */
 .progress-container {
     width: 100%;
-    padding: 0.2rem 0 0 0;
-    margin-top: 0.5rem;
+    padding: 0.1rem 0 0 0;
+    margin-top: 0.2rem;
 }
 
 .progress-bar {
     width: 100%;
-    height: 4px;
+    height: 2px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
     cursor: pointer;
@@ -155,7 +155,7 @@ body {
     justify-content: center;
     gap: 1.5rem;
     margin: 3.5rem auto 2rem auto;
-    padding: 1.5rem;
+    padding: 1.2rem 1.2rem;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -195,7 +195,7 @@ body {
     max-width: 1200px;
     width: 100%;
     margin: 0 auto 2rem auto;
-    padding: 2.5rem;
+    padding: 1.2rem 1.2rem;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -350,6 +350,18 @@ body {
         max-width: 100%;
         width: 100%;
     }
+
+    .artist-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .artist-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(12, 1fr);
+    }
 }
 
 /* Utility Classes */
@@ -388,12 +400,12 @@ p {
 
 .artist-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    grid-auto-rows: 60px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     gap: 1.2rem;
     width: 100%;
-    justify-content: center;
-    align-content: start;
+    justify-items: center;
+    align-items: center;
 }
 
 .artist-button {
