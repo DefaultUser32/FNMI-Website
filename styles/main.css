@@ -1,0 +1,361 @@
+:root {
+    --primary-color: #2C3E50;
+    --secondary-color: #E74C3C;
+    --accent-color: #F1C40F;
+    --text-color: #2C3E50;
+    --background-color: #ECF0F1;
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    overflow-x: hidden;
+}
+
+.main-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Welcome Section */
+#welcome {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 2rem;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.welcome-title {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInDown 1s ease forwards;
+}
+
+.welcome-text {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInDown 1s ease forwards 0.3s;
+}
+
+/* Welcome Grid */
+.welcome-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+    align-items: center;
+}
+
+.welcome-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Artist Showcase */
+.artist-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.artist-image-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    max-height: none;
+    overflow: hidden;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.artist-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.5s ease;
+}
+
+.artist-image.active {
+    opacity: 1;
+}
+
+.artist-info {
+    text-align: center;
+}
+
+.artist-name {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.artist-origin {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Progress Bar */
+.progress-container {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Navigation Bar */
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInDown 1s ease forwards 0.6s;
+}
+
+.nav-item {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background: white;
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.nav-item.active {
+    background: white;
+    color: var(--primary-color);
+}
+
+/* Content Area */
+.content-area {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    min-height: 300px;
+}
+
+.content-section {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--transition-speed), transform var(--transition-speed);
+}
+
+.content-section.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.content-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.content-section p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Feed Button */
+.feed-button {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    background: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-speed);
+    z-index: 100;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 1s;
+}
+
+.feed-button:hover {
+    transform: scale(1.1);
+}
+
+/* Feed View */
+.feed-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform var(--transition-speed);
+}
+
+.feed-container.active {
+    transform: translateX(0);
+}
+
+.feed-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .welcome-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .artist-image-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-title {
+        font-size: 2.5rem;
+    }
+
+    .welcome-text {
+        font-size: 1.1rem;
+    }
+
+    .artist-name {
+        font-size: 1.5rem;
+    }
+
+    .artist-origin {
+        font-size: 1rem;
+    }
+
+    .nav-bar {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    .nav-item {
+        width: 100%;
+        text-align: center;
+    }
+
+    .content-section h2 {
+        font-size: 2rem;
+    }
+
+    .content-section p {
+        font-size: 1.1rem;
+    }
+}
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}
+
+/* Typography */
+h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+} 
