@@ -27,60 +27,90 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeArtistName = document.getElementById('active-artist-name');
 
     if (artistGrid) {
+        artistGrid.innerHTML = '';
         artists.forEach((artist, index) => {
             const button = document.createElement('button');
             button.className = 'artist-button';
             button.textContent = artist.name;
-
             button.addEventListener('mouseenter', () => {
                 hoveredArtist = artist;
-                // Reset progress bar
                 progressFill.style.transition = 'none';
                 progressFill.style.width = '0%';
                 progressStartTime = Date.now();
-                progressPaused = true; // Pause the timer
-                // Set artist showcase to hovered artist (fade in)
-                fadeToArtist(artist);
-                // Set background and right image with fade
+                progressPaused = true;
+                updateArtistShowcase(artist, true); // instant update on hover
                 updateActiveArtist(artist);
             });
             button.addEventListener('mouseleave', () => {
                 hoveredArtist = null;
-                progressPaused = false; // Resume the timer
-                startProgress(); // Restart the progress
+                progressPaused = false;
+                startProgress();
             });
             button.addEventListener('click', () => {
-                // Go to artist detail page
-                window.location.href = `artist-detail.html?id=${artist.id}`;
+                selectedArtistId = artist.id;
+                showArtistDetail(artist.id);
+                setActiveBarButton('bar-artist');
             });
             artistGrid.appendChild(button);
         });
     }
 
+    // Helper to randomize background image
+    function setRandomBackground() {
+        if (artists.length > 0) {
+            const randomIndex = Math.floor(Math.random() * artists.length);
+            const randomArtist = artists[randomIndex];
+            const backgroundImage = document.querySelector('.background-image');
+            if (backgroundImage) {
+                const newSrc = `Images/Artist_Backgrounds/${randomArtist.background}`;
+                if (backgroundImage.src.endsWith(randomArtist.background)) {
+                    backgroundImage.style.opacity = '1'; // Already set, no fade
+                } else {
+                    backgroundImage.style.opacity = '0';
+                    backgroundImage.src = newSrc;
+                    backgroundImage.onload = () => {
+                        gsap.to(backgroundImage, { opacity: 1, duration: 0.35 });
+                    };
+                }
+            }
+        }
+    }
+
     // Function to update artist showcase
-    function updateArtistShowcase(artist) {
+    // If instant is true, update immediately with no fade
+    function updateArtistShowcase(artist, instant = false) {
         const artistImage = document.querySelector('.artist-image');
         const artistName = document.querySelector('.artist-name');
         const artistOrigin = document.querySelector('.artist-origin');
-        // const progressFill = document.querySelector('.progress-fill'); // No longer needed here
+        const progressContainer = document.querySelector('.progress-container');
+        if (!artistImage || !artistName || !artistOrigin || !progressContainer) return;
 
-        if (!artistImage || !artistName || !artistOrigin) return;
-
-        // Fade out current content
-        artistImage.style.opacity = '0';
-        artistName.style.opacity = '0';
-        artistOrigin.style.opacity = '0';
-
-        setTimeout(() => {
+        if (instant) {
+            artistImage.style.opacity = '1';
+            artistName.style.opacity = '1';
+            artistOrigin.style.opacity = '1';
+            progressContainer.style.opacity = '1';
             artistImage.src = `Images/Artist_Headshots/${artist.image}`;
             artistName.textContent = artist.name;
             artistOrigin.textContent = artist.origin;
-            setTimeout(() => {
-                artistImage.style.opacity = '1';
-                artistName.style.opacity = '1';
-                artistOrigin.style.opacity = '1';
-            }, 50);
-        }, 500);
+        } else {
+            // Hide all elements before fade in
+            artistImage.style.opacity = '0';
+            artistName.style.opacity = '0';
+            artistOrigin.style.opacity = '0';
+            progressContainer.style.opacity = '0';
+            gsap.to([artistImage, artistName, artistOrigin, progressContainer], { opacity: 0, duration: 0.15, onComplete: () => {
+                artistImage.src = `Images/Artist_Headshots/${artist.image}`;
+                artistName.textContent = artist.name;
+                artistOrigin.textContent = artist.origin;
+                // Ensure all are hidden before fade in
+                artistImage.style.opacity = '0';
+                artistName.style.opacity = '0';
+                artistOrigin.style.opacity = '0';
+                progressContainer.style.opacity = '0';
+                gsap.to([artistImage, artistName, artistOrigin, progressContainer], { opacity: 1, duration: 0.25, ease: 'power2.out' });
+            }});
+        }
 
         // Always update the preview below to match the current artist
         updateActiveArtist(artist);
@@ -213,8 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Feed toggle handler (arrow button)
     feedToggle.addEventListener('click', () => {
         isFeedOpen = !isFeedOpen;
+        showSection(isFeedOpen ? 'feed' : 'welcome');
         feedView.classList.toggle('active');
-        // Do NOT toggle .hidden anymore
         feedToggle.querySelector('i').classList.toggle('fa-arrow-right');
         feedToggle.querySelector('i').classList.toggle('fa-arrow-left');
     });
@@ -407,23 +437,118 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Make main artist image clickable
-    artistImage.style.cursor = 'pointer';
-    artistImage.addEventListener('click', () => {
-        const artist = artists[currentArtistIndex];
-        window.location.href = `artist-detail.html?id=${artist.id}`;
-    });
+    // SPA navigation helpers
+    function showSection(sectionId) {
+        setRandomBackground(); // Set background before showing section
+        document.getElementById('welcome').style.display = sectionId === 'welcome' ? '' : 'none';
+        document.getElementById('feed-view').style.display = sectionId === 'feed' ? '' : 'none';
+        document.getElementById('artist-detail-section').style.display = sectionId === 'artist' ? '' : 'none';
+    }
 
-    // Make preview image (bottom) clickable
-    if (activeArtistImg) {
-        activeArtistImg.style.cursor = 'pointer';
-        activeArtistImg.addEventListener('click', () => {
-            // Extract filename from src
-            const imgFilename = activeArtistImg.src.split('/').pop();
-            const artist = artists.find(a => a.image === imgFilename);
-            if (artist) {
-                window.location.href = `artist-detail.html?id=${artist.id}`;
+    // Populate artist dropdown
+    const artistSelect = document.getElementById('artist-select');
+    if (artistSelect) {
+        artistSelect.innerHTML = '';
+        artists.forEach((artist, idx) => {
+            const option = document.createElement('option');
+            option.value = artist.id;
+            option.textContent = artist.name;
+            artistSelect.appendChild(option);
+        });
+    }
+
+    // Show artist detail section for a given artist
+    function showArtistDetail(artistId) {
+        const artist = artists.find(a => a.id === artistId) || artists[0];
+        document.querySelector('.artist-detail-image').src = `Images/Artist_Headshots/${artist.image}`;
+        document.querySelector('.artist-detail-image').alt = artist.name;
+        document.querySelector('.artist-detail-name').textContent = artist.name;
+        document.querySelector('.artist-detail-origin').textContent = artist.origin;
+        if (artistSelect) artistSelect.value = artist.id;
+        showSection('artist');
+    }
+
+    // Dropdown change event
+    if (artistSelect) {
+        artistSelect.addEventListener('change', (e) => {
+            selectedArtistId = e.target.value;
+            showArtistDetail(selectedArtistId);
+        });
+    }
+
+    // Back to main button
+    const backToMainBtn = document.getElementById('back-to-main');
+    if (backToMainBtn) {
+        backToMainBtn.addEventListener('click', () => {
+            showSection('welcome');
+            setActiveBarButton('bar-home');
+            const idx = artists.findIndex(a => a.id === selectedArtistId);
+            if (idx !== -1) {
+                currentArtistIndex = idx;
+                updateArtistShowcase(artists[idx]);
+                startProgress();
             }
         });
     }
+
+    // Make main artist image clickable (show artist detail)
+    artistImage.style.cursor = 'pointer';
+    artistImage.addEventListener('click', () => {
+        const artist = artists[currentArtistIndex];
+        selectedArtistId = artist.id;
+        showArtistDetail(artist.id);
+        setActiveBarButton('bar-artist');
+    });
+
+    // Make preview image (bottom) clickable (show artist detail)
+    if (activeArtistImg) {
+        activeArtistImg.style.cursor = 'pointer';
+        activeArtistImg.addEventListener('click', () => {
+            const imgFilename = activeArtistImg.src.split('/').pop();
+            const artist = artists.find(a => a.image === imgFilename);
+            if (artist) {
+                selectedArtistId = artist.id;
+                showArtistDetail(artist.id);
+                setActiveBarButton('bar-artist');
+            }
+        });
+    }
+
+    // --- Side Bar Navigation ---
+    let selectedArtistId = artists[0].id;
+    function setActiveBarButton(id) {
+        document.querySelectorAll('.bar-button').forEach(btn => btn.classList.remove('active'));
+        if (id) document.getElementById(id).classList.add('active');
+        if (id === 'bar-home') {
+            // Restart progress bar for selected artist
+            const idx = artists.findIndex(a => a.id === selectedArtistId);
+            if (idx !== -1) {
+                currentArtistIndex = idx;
+                updateArtistShowcase(artists[idx]);
+                startProgress();
+            }
+        }
+    }
+    document.getElementById('bar-home').addEventListener('click', () => {
+        showSection('welcome');
+        setActiveBarButton('bar-home');
+        // Update home page to show selected artist
+        const idx = artists.findIndex(a => a.id === selectedArtistId);
+        if (idx !== -1) {
+            currentArtistIndex = idx;
+            updateArtistShowcase(artists[idx]);
+        }
+    });
+    document.getElementById('bar-feed').addEventListener('click', () => {
+        showSection('feed');
+        setActiveBarButton('bar-feed');
+    });
+    document.getElementById('bar-artist').addEventListener('click', () => {
+        showArtistDetail(selectedArtistId);
+        setActiveBarButton('bar-artist');
+    });
+
+    // On load, show main section and highlight Home
+    showSection('welcome');
+    setActiveBarButton('bar-home');
 }); 

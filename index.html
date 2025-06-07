@@ -97,7 +97,29 @@
                 <!-- Feed items will be dynamically added here -->
             </div>
         </div>
+
+        <!-- Artist Detail Section (hidden by default) -->
+        <section id="artist-detail-section" class="section" style="display:none;">
+            <div class="artist-detail-content">
+                <select id="artist-select"></select>
+                <div class="artist-detail-image-container">
+                    <img class="artist-detail-image" src="" alt="Artist Image">
+                </div>
+                <h2 class="artist-detail-name"></h2>
+                <p class="artist-detail-origin"></p>
+                <button id="back-to-main">&larr; Back to Showcase</button>
+            </div>
+        </section>
     </div>
+
+    <!-- Bottom Bar -->
+    <footer class="bottom-bar">
+        <div class="bar-buttons">
+            <button class="bar-button" id="bar-home" aria-label="Home"><i class="fas fa-home"></i><span>Home</span></button>
+            <button class="bar-button" id="bar-feed" aria-label="Feed"><i class="fas fa-list"></i><span>Feed</span></button>
+            <button class="bar-button" id="bar-artist" aria-label="Artist"><i class="fas fa-user"></i><span>Artist</span></button>
+        </div>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
