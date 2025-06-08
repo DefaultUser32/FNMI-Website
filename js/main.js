@@ -242,17 +242,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Artist Detail SPA ---
     function showArtistDetail(artistId) {
         const artist = artists.find(a => a.id === artistId) || artists[0];
-        document.querySelector('.artist-detail-image').src = `Images/Artist_Headshots/${artist.image}`;
+        document.querySelector('.artist-detail-image').src = `Images/Artist_Headshots/${artist.image || artistId + '.png'}`;
         document.querySelector('.artist-detail-image').alt = artist.name;
+        // Name
         document.querySelector('.artist-detail-name').textContent = artist.name;
-        document.querySelector('.artist-detail-location').textContent = artist.origin;
-        // Clear pronouns, age, and biography fields for now
-        const pronouns = document.querySelector('.artist-detail-pronouns span');
-        if (pronouns) pronouns.textContent = '';
-        const age = document.querySelector('.artist-detail-age span');
-        if (age) age.textContent = '';
-        const bio = document.querySelector('.artist-detail-bio-text');
-        if (bio) bio.textContent = '';
+        // Meta box
+        const metaBox = document.querySelector('.artist-detail-meta');
+        metaBox.innerHTML = '';
+        if (artist.identity) {
+            const identityDiv = document.createElement('div');
+            identityDiv.textContent = artist.identity;
+            identityDiv.style.fontWeight = 'bold';
+            metaBox.appendChild(identityDiv);
+        }
+        if (artist.specificIdentity) {
+            const specDiv = document.createElement('div');
+            specDiv.textContent = artist.specificIdentity;
+            metaBox.appendChild(specDiv);
+        }
+        if (artist.pronouns) {
+            const pronounDiv = document.createElement('div');
+            pronounDiv.textContent = artist.pronouns;
+            metaBox.appendChild(pronounDiv);
+        }
+        if (artist.birthYear) {
+            const ageDiv = document.createElement('div');
+            ageDiv.textContent = artist.birthYear;
+            metaBox.appendChild(ageDiv);
+        }
+        // Links
+        if (artist.links && artist.links.length > 0) {
+            const linksDiv = document.createElement('div');
+            linksDiv.className = 'artist-links';
+            artist.links.forEach(link => {
+                const a = document.createElement('a');
+                a.href = link.url;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                const icon = document.createElement('i');
+                icon.className = getLinkIconFA(link.url);
+                a.appendChild(icon);
+                linksDiv.appendChild(a);
+            });
+            metaBox.appendChild(linksDiv);
+        }
+        // Bio
+        document.querySelector('.artist-detail-bio-text').textContent = artist.bio || '';
+        // Remove works/projects from artist detail page
+        const bioBox = document.querySelector('.artist-detail-bio');
+        let worksBox = bioBox.querySelector('.artist-works-list');
+        if (worksBox) worksBox.remove();
         if (artistSelect) artistSelect.value = artist.id;
         showSection('artist');
     }
@@ -405,4 +444,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setActiveBarButton('bar-home'); // Highlight Home icon on load
+
+    // Artist Selector Dropdown
+    const artistSelectorBtn = document.getElementById('artist-selector-btn');
+    const artistSelectorDropdown = document.getElementById('artist-selector-dropdown');
+
+    function initializeArtistSelector() {
+        if (!artistSelectorBtn || !artistSelectorDropdown) return;
+
+        // Populate dropdown
+        artists.forEach(artist => {
+            const item = document.createElement('div');
+            item.className = 'artist-selector-item';
+            item.textContent = artist.name;
+            item.addEventListener('click', () => {
+                selectedArtistId = artist.id;
+                showArtistDetail(artist.id);
+                artistSelectorDropdown.classList.remove('show');
+            });
+            artistSelectorDropdown.appendChild(item);
+        });
+
+        // Toggle dropdown
+        artistSelectorBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            artistSelectorDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!artistSelectorDropdown.contains(e.target) && !artistSelectorBtn.contains(e.target)) {
+                artistSelectorDropdown.classList.remove('show');
+            }
+        });
+    }
+
+    initializeArtistSelector();
+
+    // Helper to get Font Awesome icon class based on link type
+    function getLinkIconFA(url) {
+        if (/instagram\.com/.test(url)) return 'fab fa-instagram';
+        if (/twitter\.com/.test(url)) return 'fab fa-twitter';
+        if (/facebook\.com/.test(url)) return 'fab fa-facebook';
+        if (/tiktok\.com/.test(url)) return 'fab fa-tiktok';
+        if (/youtube\.com/.test(url)) return 'fab fa-youtube';
+        if (/linkedin\.com/.test(url)) return 'fab fa-linkedin';
+        if (/news|article|cbc|globeandmail|nytimes|theguardian/.test(url)) return 'fas fa-newspaper';
+        return 'fas fa-globe';
+    }
+
+    // --- Main Nav Bar Section Navigation ---
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active from all
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // Show the correct section
+            const sectionId = btn.getAttribute('data-section');
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        });
+    });
 }); 
