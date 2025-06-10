@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FNMI Art Showcase - Art as Resilience</title>
+    <title>Art is Resilience</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -20,10 +20,9 @@
             <div class="content">
                 <div class="welcome-grid">
                     <div class="welcome-text-container">
-                        <h1 class="welcome-title">FNMI Art Showcase</h1>
+                        <h1 class="welcome-title">Art is Resilience</h1>
                         <p class="welcome-text">
-                            Welcome to our celebration of First Nations, Métis, and Inuit art as a powerful tool for cultural resilience and reclamation. 
-                            This showcase explores how art serves as both a bridge to our past and a beacon for our future.
+                            Indigenous artists stand as a force for cultural reclamation.  Through a diverse mix of mediums, identities, and messages, they work to change the cultural perceptions of FNMI communities.  This website is a celebration and exploration of the power of Indigenous art.
                         </p>
                     </div>
                     <div class="artist-showcase">
@@ -44,34 +43,34 @@
                 
                 <!-- Navigation Bar -->
                 <nav class="nav-bar">
-                    <button class="nav-item" data-section="power-of-art">The Power of Art</button>
-                    <button class="nav-item" data-section="art-as-resistance">Art as Resistance</button>
-                    <button class="nav-item" data-section="art-impact">Art's Impact</button>
-                    <button class="nav-item" data-section="challenges">Facing Adversity</button>
-                    <button class="nav-item" data-section="social-media">A Changing World</button>
+                    <button class="nav-item" data-section="art-is-power">Art is Power</button>
+                    <button class="nav-item" data-section="art-is-change">Art is Change</button>
+                    <button class="nav-item" data-section="art-is-presence">Art is Presence</button>
+                    <button class="nav-item" data-section="art-is-empathy">Art is Empathy</button>
+                    <button class="nav-item" data-section="art-is-continuity">Art is Continuity</button>
                 </nav>
 
                 <!-- Content Area -->
                 <div class="content-area">
-                    <div id="power-of-art" class="content-section active">
-                        <h2>The Power of Art</h2>
-                        <p>Art serves as a vital link to ancestral knowledge and traditions. Through various forms of expression, Indigenous artists preserve and share their cultural heritage, ensuring that future generations can connect with their roots.</p>
+                    <div id="art-is-power" class="content-section active">
+                        <h2>Art is Power</h2>
+                        <p>Power has long been stripped from FNMI communities through systematic displacement, suppression, and silencing.  As these power structures change in the modern day, historically (and presently) oppressed communities struggle to find a new footing.  Through this, art empowers, allowing the creators to reclaim control over their narrative, to gain influence like never before.</p>
                     </div>
-                    <div id="art-as-resistance" class="content-section">
-                        <h2>Art as Resistance</h2>
-                        <p>Contemporary Indigenous artists are using their work to challenge stereotypes and reclaim narratives. Their art becomes a powerful tool for social commentary and cultural assertion.</p>
+                    <div id="art-is-change" class="content-section">
+                        <h2>Art is Change</h2>
+                        <p>Change requires more than awareness, it needs action, transformation, and courage.  FNMI art is not a simple documentation of the past, it is an active force in shaping the future.  It challenges the view to reframe their perspective, it forms communities and creates rallying points upon which systemic change is born.</p>
                     </div>
-                    <div id="art-impact" class="content-section">
-                        <h2>Art's Impact</h2>
-                        <p>The impact of Indigenous art extends beyond aesthetics. It creates understanding, builds bridges between communities, and fosters cultural pride and identity.</p>
+                    <div id="art-is-presence" class="content-section">
+                        <h2>Art is Presence</h2>
+                        <p>It is all too easy for marginalized voices to fall into the background; their histories forgotten, their challenges neglected.  FNMI art resists this, it draws attention, it creates conversation, it gives physical presence to the unseen.  Through street art, sculpture, social media and more, artists are able to create a presence is the cultural zeitgeist.</p>
                     </div>
-                    <div id="challenges" class="content-section">
-                        <h2>Challenges</h2>
-                        <p>Despite its importance, Indigenous art faces challenges in terms of recognition, preservation, and accessibility. These challenges highlight the need for continued support and advocacy.</p>
+                    <div id="art-is-empathy" class="content-section">
+                        <h2>Art is Empathy</h2>
+                        <p>Empathy starts with understanding.  Oppression survives through ignorance and disinterest; for generations it has used dehumanization and othering as tools to separate the savage from the saviour.  Undoing the layers of systemic oppression that FNMI communities face starts with contesting the longstanding history of worldwide disinterest.  Art creates understanding, and through understanding comes empathy.</p>
                     </div>
-                    <div id="social-media" class="content-section">
-                        <h2>The Role of Social Media</h2>
-                        <p>Digital platforms have become crucial spaces for Indigenous artists to share their work, connect with audiences, and build communities across geographical boundaries.</p>
+                    <div id="art-is-continuity" class="content-section">
+                        <h2>Art is Continuity</h2>
+                        <p>As a result of colonial oppression, generational fractures have formed in many Indigenous communities.  This brings into question the continuance of cultural continuity; the expectation that the younger generations will carry on the traditions and memories of the old, allowing culture to exist as a continuous set of experiences.  Through art, FNMI creators revive this, continuing and expanding upon the generational knowledge and history.</p>
                     </div>
                 </div>
 
@@ -87,14 +86,28 @@
         </section>
 
         <!-- Feed View -->
-        <div id="feed-view" class="feed-container hidden">
-            <div class="feed-content">
-                <!-- Feed items will be dynamically added here -->
+        <div id="feed-view" class="feed-view hidden">
+            <div class="feed-carousel-container" id="feed-carousel-container">
+                <div id="feed-media-wrapper"></div>
+            </div>
+            <div class="feed-info-box" id="feed-info-box">
+                <div class="feed-info-box-content">
+                    <div class="feed-info-title" id="feed-info-title"></div>
+                    <div class="feed-info-meta" id="feed-info-meta"></div>
+                    <div class="feed-info-toggle" id="feed-info-toggle">
+                        <button class="feed-info-toggle-btn active" id="feed-toggle-meaning">Meaning</button>
+                        <button class="feed-info-toggle-btn" id="feed-toggle-impact">Impact</button>
+                    </div>
+                    <div class="feed-info-text" id="feed-info-text"></div>
+                </div>
+            </div>
+            <div class="feed-info-eye-toggle-outer">
+                <button id="feed-info-eye-toggle" class="feed-info-eye-toggle" aria-label="Toggle Info Box" title="Show/Hide Info" type="button">&#128065;</button>
             </div>
         </div>
 
         <!-- Artist Detail Section (hidden by default) -->
-        <section id="artist-detail-section" class="section" style="display:none;">
+        <section id="artist-detail-section" class="section artist-detail-section" style="display:none;">
             <div class="artist-detail-content">
                 <div class="artist-detail-grid">
                     <div class="artist-detail-image-container">
@@ -120,6 +133,11 @@
                         </div>
                     </div>
                 </div>
+                <!-- Works section is now outside the grid for full width -->
+                <div class="artist-works-section">
+                    <div class="artist-works-bar" id="artist-works-bar"></div>
+                    <div class="artist-work-viewer" id="artist-work-viewer"></div>
+                </div>
                 <button id="back-to-main">&larr; Back to Showcase</button>
             </div>
         </section>
@@ -129,8 +147,8 @@
     <footer class="bottom-bar">
         <div class="bar-buttons">
             <button class="bar-button" id="bar-home" aria-label="Home"><i class="fas fa-home"></i><span>Home</span></button>
-            <button class="bar-button" id="bar-feed" aria-label="Feed"><i class="fas fa-list"></i><span>Feed</span></button>
-            <button class="bar-button" id="bar-artist" aria-label="Artist"><i class="fas fa-user"></i><span>Artist</span></button>
+            <button class="bar-button" id="bar-feed" aria-label="Feed"><i class="fas fa-compass"></i><span>Feed</span></button>
+            <button class="bar-button" id="bar-artist" aria-label="Artist"><i class="fas fa-palette"></i><span>Artist</span></button>
         </div>
     </footer>
 
