@@ -74,6 +74,36 @@ document.addEventListener('DOMContentLoaded', () => {
     feedInfoEyeToggle = document.getElementById('feed-info-eye-toggle');
     feedInfoBoxContent = feedInfoBox.querySelector('.feed-info-box-content');
 
+    // Initialize artist selector
+    const artistSelectorBtn = document.getElementById('artist-selector-btn');
+    const artistSelectorDropdown = document.getElementById('artist-selector-dropdown');
+
+    if (artistSelectorBtn && artistSelectorDropdown) {
+        // Populate dropdown
+        artists.forEach(artist => {
+            const item = document.createElement('div');
+            item.className = 'artist-selector-item';
+            item.textContent = artist.name;
+            item.addEventListener('click', () => {
+                showArtistDetail(artist.id);
+                artistSelectorDropdown.classList.remove('show');
+            });
+            artistSelectorDropdown.appendChild(item);
+        });
+
+        // Toggle dropdown on button click
+        artistSelectorBtn.addEventListener('click', () => {
+            artistSelectorDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!artistSelectorBtn.contains(e.target) && !artistSelectorDropdown.contains(e.target)) {
+                artistSelectorDropdown.classList.remove('show');
+            }
+        });
+    }
+
     // --- Utility Functions ---
     function setActiveBarButton(id) {
         document.querySelectorAll('.bar-button').forEach(btn => btn.classList.remove('active'));
@@ -298,12 +328,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Artist Detail SPA ---
     function getLinkIconFA(url) {
-        if (/instagram\\.com/.test(url)) return 'fab fa-instagram';
-        if (/twitter\\.com|x\\.com/.test(url)) return 'fab fa-twitter';
-        if (/facebook\\.com/.test(url)) return 'fab fa-facebook';
-        if (/tiktok\\.com/.test(url)) return 'fab fa-tiktok';
-        if (/youtube\\.com/.test(url)) return 'fab fa-youtube';
-        if (/linkedin\\.com/.test(url)) return 'fab fa-linkedin';
+        if (/instagram\.com/.test(url)) return 'fab fa-instagram';
+        if (/twitter\.com|x\.com/.test(url)) return 'fab fa-twitter';
+        if (/facebook\.com/.test(url)) return 'fab fa-facebook-f';
+        if (/tiktok\.com/.test(url)) return 'fab fa-tiktok';
+        if (/youtube\.com/.test(url)) return 'fab fa-youtube';
+        if (/linkedin\.com/.test(url)) return 'fab fa-linkedin-in';
         if (/news|article|cbc|globeandmail|nytimes|theguardian/.test(url)) return 'fas fa-newspaper';
         return 'fas fa-globe';
     }
