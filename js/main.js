@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const randomArtist = artists[randomIndex];
             const backgroundImage = document.querySelector('.background-image');
             if (backgroundImage) {
-                const newSrc = `Images/Artist_Backgrounds/${randomArtist.background}`;
+                const newSrc = randomArtist.background;
                 if (!backgroundImage.src.endsWith(randomArtist.background)) {
                     backgroundImage.style.opacity = '0';
                     backgroundImage.src = newSrc;
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             artistName.style.opacity = '1';
             artistOrigin.style.opacity = '1';
             progressContainer.style.opacity = '1';
-            artistImage.src = `Images/Artist_Headshots/${artist.image}`;
+            artistImage.src = artist.image;
             artistName.textContent = artist.name;
             artistOrigin.textContent = artist.origin;
         } else {
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             artistOrigin.style.opacity = '0';
             progressContainer.style.opacity = '0';
             gsap.to([artistImage, artistName, artistOrigin, progressContainer], { opacity: 0, duration: 0.15, onComplete: () => {
-                artistImage.src = `Images/Artist_Headshots/${artist.image}`;
+                artistImage.src = artist.image;
                 artistName.textContent = artist.name;
                 artistOrigin.textContent = artist.origin;
                 gsap.to([artistImage, artistName, artistOrigin, progressContainer], { opacity: 1, duration: 0.25, ease: 'power2.out' });
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateActiveArtist(artist) {
         if (!artist) return;
         if (activeArtistImageContainer && activeArtistImg && activeArtistName) {
-            activeArtistImg.src = `Images/Artist_Hedshots_Tight/${artist.image}`;
+            activeArtistImg.src = artist.image;
             activeArtistName.textContent = artist.name;
             activeArtistImageContainer.style.display = 'block';
         }
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showArtistDetail(artistId) {
         const artist = artists.find(a => a.id === artistId) || artists[0];
-        document.querySelector('.artist-detail-image').src = `Images/Artist_Headshots/${artist.image || artistId + '.webp'}`;
+        document.querySelector('.artist-detail-image').src = artist.image;
         document.querySelector('.artist-detail-image').alt = artist.name;
         document.querySelector('.artist-detail-name').textContent = artist.name;
         const metaBox = document.querySelector('.artist-detail-meta');
@@ -713,21 +713,20 @@ document.addEventListener('DOMContentLoaded', () => {
             showNoItemsMessage();
             return;
         }
-        let firstWithMedia = -1;
-        for (let i = 0; i < feedLoadedItems.length; i++) {
-            if (feedLoadedItems[i].work.media && feedLoadedItems[i].work.media.length > 0) {
-                firstWithMedia = i;
-                break;
+        // Ensure the first item is not a video
+        if (feedLoadedItems.length > 0 && feedLoadedItems[0].work.media && feedLoadedItems[0].work.media.length > 0 && feedLoadedItems[0].work.media[0].type === 'video') {
+            let swapIdx = -1;
+            for (let i = 1; i < feedLoadedItems.length; i++) {
+                if (feedLoadedItems[i].work.media && feedLoadedItems[i].work.media.length > 0 && feedLoadedItems[i].work.media[0].type === 'image') {
+                    swapIdx = i;
+                    break;
+                }
             }
-        }
-        if (firstWithMedia === -1) {
-            showNoItemsMessage();
-            return;
-        }
-        // Always validate feedCurrentIndex
-        if (isNaN(feedCurrentIndex) || feedCurrentIndex < 0 || feedCurrentIndex >= feedLoadedItems.length) {
-            feedCurrentIndex = firstWithMedia;
-            saveFeedCurrentIndex();
+            if (swapIdx !== -1) {
+                const temp = feedLoadedItems[0];
+                feedLoadedItems[0] = feedLoadedItems[swapIdx];
+                feedLoadedItems[swapIdx] = temp;
+            }
         }
         updateCarousel();
         feedView.addEventListener('wheel', handleWheel, { passive: false });
@@ -1056,7 +1055,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeArtistShowcase() {
         if (!artists || artists.length === 0) return;
         const artist = artists[0];
-        if (artistImage) artistImage.src = `Images/Artist_Headshots/${artist.image}`;
+        if (artistImage) artistImage.src = artist.image;
         if (artistName) artistName.textContent = artist.name;
         if (artistOrigin) artistOrigin.textContent = artist.origin;
         updateArtistShowcase(artist, true);
