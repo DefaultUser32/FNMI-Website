@@ -726,6 +726,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const temp = feedLoadedItems[0];
                 feedLoadedItems[0] = feedLoadedItems[swapIdx];
                 feedLoadedItems[swapIdx] = temp;
+                feedCurrentIndex = 0;
+                saveFeedCurrentIndex();
             }
         }
         updateCarousel();
