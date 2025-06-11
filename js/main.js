@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showArtistDetail(artistId) {
         const artist = artists.find(a => a.id === artistId) || artists[0];
-        document.querySelector('.artist-detail-image').src = `Images/Artist_Headshots/${artist.image || artistId + '.png'}`;
+        document.querySelector('.artist-detail-image').src = `Images/Artist_Headshots/${artist.image || artistId + '.webp'}`;
         document.querySelector('.artist-detail-image').alt = artist.name;
         document.querySelector('.artist-detail-name').textContent = artist.name;
         const metaBox = document.querySelector('.artist-detail-meta');
